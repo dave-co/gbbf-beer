@@ -1,5 +1,6 @@
 import React from 'react';
 import BeerListItem from './BeerListItem'
+import Header from './Header'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 
 class BeerList extends React.PureComponent {
@@ -25,6 +26,10 @@ class BeerList extends React.PureComponent {
           name={item.name}
         />
       );
+
+      _renderHeader = () => {
+          return <Header />
+      }
     
       render() {
         return (
@@ -33,6 +38,8 @@ class BeerList extends React.PureComponent {
             extraData={this.state}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
+            ListHeaderComponent={this._renderHeader}
+            stickyHeaderIndices={[0]}
           />
         );
       }
