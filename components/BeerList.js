@@ -32,6 +32,7 @@ class BeerList extends React.PureComponent {
           brewery={item.brewery}
           style={item.style}
           notes={item.notes}
+          colour={item.colour}
         />
       );
 
