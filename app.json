@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+	  "bundleIdentifier": "co.uk.gbbf"
+    },
+	"android": {
+	  "package": "co.uk.gbbf"
+	},
+    "description": ""
   }
 }
