@@ -28,6 +28,10 @@ class BeerList extends React.PureComponent {
           onPressItem={this._onPressItem}
           selected={!!this.state.selected.get(item.id)}
           name={item.name}
+          bar={item.barCode}
+          brewery={item.brewery}
+          style={item.style}
+          notes={item.notes}
         />
       );
 
