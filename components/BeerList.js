@@ -32,24 +32,16 @@ class BeerList extends React.PureComponent {
       );
 
       _renderHeader = () => {
-          return <Header search={this._search}/>
+          return <Header
+            filterResult={this._filterResult}
+            beerData={BEER_DATA}
+          />
       }
 
-      _search = (searchText) => {
-        if (!searchText || searchText === ""){
-            this.setState({beerData : BEER_DATA})
-        } else {
-            let filtered = BEER_DATA.filter(beer => {
-                if(beer.name.toLowerCase().includes(searchText.toLowerCase())){
-                    return true;
-                }
-                return false;
-            })
-            this.setState({beerData : filtered})
-        }
-
+      _filterResult = (filteredBeerData) => {
+          this.setState({beerData : filteredBeerData})
       }
-    
+
       render() {
         return (
           <FlatList
