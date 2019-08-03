@@ -1,10 +1,14 @@
 import React from 'react';
 import BeerListItem from './BeerListItem'
+import { BEER_DATA } from '../beer-data'
 import Header from './Header'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 
 class BeerList extends React.PureComponent {
-    state = {selected: (new Map())};
+    state = {
+        selected: (new Map()),
+        beerData : BEER_DATA
+    };
     
       _keyExtractor = (item, index) => item.id;
     
@@ -28,13 +32,28 @@ class BeerList extends React.PureComponent {
       );
 
       _renderHeader = () => {
-          return <Header />
+          return <Header search={this._search}/>
+      }
+
+      _search = (searchText) => {
+        if (!searchText || searchText === ""){
+            this.setState({beerData : BEER_DATA})
+        } else {
+            let filtered = BEER_DATA.filter(beer => {
+                if(beer.name.toLowerCase().includes(searchText.toLowerCase())){
+                    return true;
+                }
+                return false;
+            })
+            this.setState({beerData : filtered})
+        }
+
       }
     
       render() {
         return (
           <FlatList
-            data={this.props.data}
+            data={this.state.beerData}
             extraData={this.state}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}

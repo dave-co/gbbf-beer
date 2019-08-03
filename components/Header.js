@@ -9,13 +9,18 @@ class Header extends React.Component {
         }
     }
 
+    _onChangeSearch = (text) => {
+        this.setState({text})
+        this.props.search(text)
+    }
+
     render(){
         return (
             <View >
                 <View style={styles.row}>
                     <TextInput 
                         placeholder='Search...'
-                        onChangeText={(text) => this.setState({text})}
+                        onChangeText={(text) => this._onChangeSearch(text)}
                         value={this.state.text}
                     />
                     {/* <Text>test</Text> */}
