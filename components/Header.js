@@ -28,61 +28,27 @@ class Header extends React.Component {
         let filtered = this.props.beerData
         if (this.state.text && this.state.text !== "") {
             searchText = this.state.text.toLowerCase()
-            filtered = filtered.filter(beer => {
-                if(beer.name.toLowerCase().includes(searchText)) {
-                    return true
-                }
-                return false
-            })
+            filtered = filtered.filter(beer => { return beer.name.toLowerCase().includes(searchText)})
         }
         if (!this.state.abv_0_3) {
-            filtered = filtered.filter(beer => {
-                if (beer.abv && parseFloat(beer.abv) < 3) {
-                    return false
-                }
-                return true
-            })
+            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) < 3)})
         }
         if (!this.state.abv_3_4) {
-            filtered = filtered.filter(beer => {
-                if (beer.abv && parseFloat(beer.abv) >= 3 && parseFloat(beer.abv) < 4) {
-                    return false
-                }
-                return true
-            })
+            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 3 && parseFloat(beer.abv) < 4)})
         }
         if (!this.state.abv_4_5) {
-            filtered = filtered.filter(beer => {
-                if (beer.abv && parseFloat(beer.abv) >= 4 && parseFloat(beer.abv) < 5) {
-                    return false
-                }
-                return true
-            })
+            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 4 && parseFloat(beer.abv) < 5)})
         }
         if (!this.state.abv_5_6) {
-            filtered = filtered.filter(beer => {
-                if (beer.abv && parseFloat(beer.abv) >= 5 && parseFloat(beer.abv) < 6) {
-                    return false
-                }
-                return true
-            })
+            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 5 && parseFloat(beer.abv) < 6)})
         }
         if (!this.state.abv_6_7) {
-            filtered = filtered.filter(beer => {
-                if (beer.abv && parseFloat(beer.abv) >= 6 && parseFloat(beer.abv) < 7) {
-                    return false
-                }
-                return true
-            })
+            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 6 && parseFloat(beer.abv) < 7)})
         }
         if (!this.state.abv_7up) {
-            filtered = filtered.filter(beer => {
-                if (beer.abv && parseFloat(beer.abv) >= 7) {
-                    return false
-                }
-                return true
-            })
+            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 7)})
         }
+
 
         this.props.filterResult(filtered)
     }
