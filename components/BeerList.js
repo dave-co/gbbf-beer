@@ -7,6 +7,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 class BeerList extends React.PureComponent {
     state = {
         selected: (new Map()),
+        want: (new Map()),
         beerData : BEER_DATA
     };
     
@@ -21,12 +22,22 @@ class BeerList extends React.PureComponent {
           return {selected};
         });
       };
+
+      _onWantChanged = (id) => {
+        this.setState((state) => {
+            const want = new Map(state.want);
+            want.set(id, !want.get(id)); // toggle
+            return {want};
+          });
+      }
     
       _renderItem = ({item}) => (
         <BeerListItem
           id={item.id}
           onPressItem={this._onPressItem}
           selected={!!this.state.selected.get(item.id)}
+          onWantChanged={this._onWantChanged}
+          want={!!this.state.want.get(item.id)}
           name={item.name}
           bar={item.barCode}
           brewery={item.brewery}

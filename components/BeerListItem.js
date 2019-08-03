@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions  } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, CheckBox  } from 'react-native';
 
 class BeerListItem extends React.PureComponent {
     _onPress = () => {
@@ -17,9 +17,9 @@ class BeerListItem extends React.PureComponent {
         return beerStyle
     }
 
-    // _parseColour = (colour) => {
-    //     return 'colour_' + colour
-    // }
+    _onWantChanged = () => {
+        this.props.onWantChanged(this.props.id)
+    }
     
     render() {
         const textColor = this.props.selected ? 'red' : 'black';
@@ -35,7 +35,19 @@ class BeerListItem extends React.PureComponent {
                   <View style={[styles.colourBase, styles[colourStyle]]} />
                   <Text style={styles.info}>{this.props.bar}</Text>
               </View>
-              {this.props.selected && (<View style={styles.notes}><Text>{this.props.notes}</Text></View>)}
+              {this.props.selected && (
+                <View style={styles.notes}>
+                    <Text>{this.props.notes}</Text>
+                </View>
+              )}
+              {this.props.selected && (
+                <View style={styles.controls}>
+                    <CheckBox  
+                        value={this.props.want}
+                        onValueChange={this._onWantChanged}
+                    /><Text style={styles.label}>Want</Text>
+                </View>
+              )}
             </View> 
           </TouchableOpacity>
         );
@@ -77,6 +89,13 @@ const styles = StyleSheet.create({
     },
     notes : {
         marginLeft : 10
+    },
+    controls : {
+        flexDirection : 'row',
+        marginLeft : 10
+    },
+    label : {
+        marginTop: 5
     },
     infoRow : {
         flexDirection : 'row',
