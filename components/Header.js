@@ -12,7 +12,7 @@ class Header extends React.Component {
     render(){
         return (
             <View >
-                <View style={{flexDirection: 'row'}}>
+                <View style={styles.row}>
                     <TextInput 
                         placeholder='Search...'
                         onChangeText={(text) => this.setState({text})}
@@ -24,4 +24,11 @@ class Header extends React.Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    row : {
+        flexDirection: 'row'
+    }
+})
+
 export default Header

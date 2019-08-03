@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions  } from 'react-native';
 
 class BeerListItem extends React.PureComponent {
     _onPress = () => {
@@ -10,11 +10,18 @@ class BeerListItem extends React.PureComponent {
         const textColor = this.props.selected ? 'red' : 'black';
         return (
           <TouchableOpacity onPress={this._onPress}>
-            <View>
+            <View style={styles.row}>
               <Text style={{color: textColor}}>{this.props.name}</Text>
             </View>
           </TouchableOpacity>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    row : {
+        width: Dimensions.get('window').width
+    }
+})
+
 export default BeerListItem
