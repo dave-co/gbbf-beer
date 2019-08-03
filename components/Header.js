@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Dimensions, CheckBox } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Dimensions, CheckBox, AsyncStorage } from 'react-native';
 
 class Header extends React.Component {
     constructor(props) {
@@ -17,10 +17,33 @@ class Header extends React.Component {
             abv_6_7 : true,
             abv_7up : true,
         }
+        this.loadLocalData();
+    }
+
+    async saveLocalData(state) {
+        try {
+            await AsyncStorage.setItem("appState", JSON.stringify(state));
+        } catch (error) {
+            console.log('error saving data');
+        }
+    }
+
+    async loadLocalData() {
+        try {
+            let data = await AsyncStorage.getItem("appState");
+            let appState = JSON.parse(data);
+            this.setState({...appState}, () => this._applySearchAndFilter());
+          } catch (error) {
+            console.log('error loading data', error);
+          }
+    }
+
+    componentDidUpdate() {
+        this.saveLocalData(this.state);
     }
 
     _onChangeSearch = (text) => {
-        this.setState({text}, () => this._applySearchAndFilter())
+        this.setState({text}, () => this._applySearchAndFilter());
     }
 
     _onChangeAbv = (abv) => {
