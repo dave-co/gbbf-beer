@@ -6,6 +6,10 @@ class Header extends React.Component {
         super(props)
         this.state = {
             text : '',
+            nameSearch : true,
+            notesSearch : false,
+            brewerySearch : false,
+            barSearch : false,
             abv_0_3 : true,
             abv_3_4 : true,
             abv_4_5 : true,
@@ -17,18 +21,31 @@ class Header extends React.Component {
 
     _onChangeSearch = (text) => {
         this.setState({text}, () => this._applySearchAndFilter())
-        // this.props.search(text)
     }
 
     _onChangeAbv = (abv) => {
         this.setState(abv, () => this._applySearchAndFilter())
     }
 
+    _onChangeSearchField = (searchField) => {
+        this.setState(searchField, () => this._applySearchAndFilter())
+    }
+
     _applySearchAndFilter(){
         let filtered = this.props.beerData
         if (this.state.text && this.state.text !== "") {
-            searchText = this.state.text.toLowerCase()
-            filtered = filtered.filter(beer => { return beer.name.toLowerCase().includes(searchText)})
+            filtered = filtered.filter(beer => {
+                if(this.state.nameSearch && beer.name.toLowerCase().includes(this.state.text.toLowerCase())) {
+                    return true
+                } else if (this.state.notesSearch && beer.notes.toLowerCase().includes(this.state.text.toLowerCase())) {
+                    return true
+                } else if (this.state.brewerySearch && beer.brewery.toLowerCase().includes(this.state.text.toLowerCase())) {
+                    return true
+                } else if (this.state.barSearch && beer.barName.toLowerCase().includes(this.state.text.toLowerCase())) {
+                    return true
+                }
+                return false
+            })
         }
         if (!this.state.abv_0_3) {
             filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) < 3)})
@@ -49,7 +66,6 @@ class Header extends React.Component {
             filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 7)})
         }
 
-
         this.props.filterResult(filtered)
     }
 
@@ -62,10 +78,29 @@ class Header extends React.Component {
                         onChangeText={(text) => this._onChangeSearch(text)}
                         value={this.state.text}
                     />
-                    <Text>test</Text>
+                    <CheckBox
+                        value={this.state.nameSearch}
+                        onValueChange={() => this._onChangeSearchField({nameSearch : !this.state.nameSearch})}
+                    />
+                    <Text style={styles.label}>Name</Text>
+                    <CheckBox
+                        value={this.state.notesSearch}
+                        onValueChange={() => this._onChangeSearchField({notesSearch : !this.state.notesSearch})}
+                    />
+                    <Text style={styles.label}>Notes</Text>
+                    <CheckBox
+                        value={this.state.brewerySearch}
+                        onValueChange={() => this._onChangeSearchField({brewerySearch : !this.state.brewerySearch})}
+                    />
+                    <Text style={styles.label}>Brewery</Text>
+                    <CheckBox
+                        value={this.state.barSearch}
+                        onValueChange={() => this._onChangeSearchField({barSearch : !this.state.barSearch})}
+                    />
+                    <Text style={styles.label}>Bar</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text>ABV</Text>
+                    <Text style={styles.label}>ABV</Text>
                     <CheckBox 
                         value={this.state.abv_0_3}
                         onValueChange={() => this._onChangeAbv({abv_0_3 : !this.state.abv_0_3})}
