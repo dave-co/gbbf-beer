@@ -20,6 +20,10 @@ class BeerListItem extends React.PureComponent {
     _onWantChanged = () => {
         this.props.onWantChanged(this.props.id)
     }
+
+    _onFavouriteChanged = () => {
+        this.props.onFavouriteChanged(this.props.id)
+    }
     
     render() {
         const textColor = this.props.selected ? 'red' : 'black';
@@ -32,6 +36,9 @@ class BeerListItem extends React.PureComponent {
                   <Text style={{flex : 4, color: textColor}}>{this.props.name}</Text>
                   {this.props.want && (
                       <Text style={styles.flags}>Want</Text>
+                  )}
+                  {this.props.favourite && (
+                      <Text style={styles.flags}>Favourite</Text>
                   )}
               </View>
               <View style={styles.infoRow}>
@@ -48,9 +55,16 @@ class BeerListItem extends React.PureComponent {
               {this.props.selected && (
                 <View style={styles.controls}>
                     <CheckBox  
+                        disabled={this.props.favourite}
                         value={this.props.want}
                         onValueChange={this._onWantChanged}
-                    /><Text style={styles.label}>Want</Text>
+                    />
+                    <Text style={styles.label}>Want</Text>
+                    <CheckBox  
+                        value={this.props.favourite}
+                        onValueChange={this._onFavouriteChanged}
+                    />
+                    <Text style={styles.label}>Favourite</Text>
                 </View>
               )}
             </View>

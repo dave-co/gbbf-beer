@@ -3,17 +3,20 @@ import BeerListItem from './BeerListItem'
 import { BEER_DATA } from '../beer-data'
 import Header from './Header'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { fetchWants, saveWants } from '../storage/Storage'
+import { fetchWants, saveWants, fetchFavourites, saveFavourites } from '../storage/Storage'
 
 class BeerList extends React.PureComponent {
     state = {
         selected: (new Map()),
         wants: (new Map()),
+        favourites : (new Map()),
         beerData : BEER_DATA
     };
     async componentDidMount(){
         let wants = await fetchWants()
         this.setState({wants})
+        let favourites = await fetchFavourites()
+        this.setState({favourites})
     }
     
       _keyExtractor = (item, index) => item.id;
@@ -28,14 +31,29 @@ class BeerList extends React.PureComponent {
         });
       };
 
-     _onWantChanged = async (id) => {
+    _onWantChanged = async (id) => {
         this.setState((state) => {
             const wants = new Map(state.wants);
             wants.set(id, !wants.get(id)); // toggle
             return {wants};
+        },
+        () => {
+            saveWants(new Map(this.state.wants))
+        });
+    }
+
+      _onFavouriteChanged = async (id) => {
+        this.setState((state) => {
+            const favourites = new Map(state.favourites);
+            favourites.set(id, !favourites.get(id)); // toggle
+            return {favourites};
           },
           () => {
-              saveWants(new Map(this.state.wants))
+            saveFavourites(new Map(this.state.favourites))
+            if (this.state.favourites.get(id) && this.state.wants.get(id)) {
+                // cant be a want and a fav at the same time
+                this._onWantChanged(id)
+            }
           });
       }
     
@@ -46,6 +64,8 @@ class BeerList extends React.PureComponent {
           selected={!!this.state.selected.get(item.id)}
           onWantChanged={this._onWantChanged}
           want={!!this.state.wants.get(item.id)}
+          onFavouriteChanged={this._onFavouriteChanged}
+          favourite={!!this.state.favourites.get(item.id)}
           name={item.name}
           bar={item.barCode}
           brewery={item.brewery}
