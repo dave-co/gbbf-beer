@@ -10,6 +10,7 @@ class Header extends React.Component {
             notesSearch : false,
             brewerySearch : false,
             barSearch : false,
+            styleSearch : false,
             abv_0_3 : true,
             abv_3_4 : true,
             abv_4_5 : true,
@@ -67,6 +68,8 @@ class Header extends React.Component {
                 } else if (this.state.brewerySearch && beer.brewery.toLowerCase().includes(this.state.text.toLowerCase())) {
                     return true
                 } else if (this.state.barSearch && beer.barName.toLowerCase().includes(this.state.text.toLowerCase())) {
+                    return true
+                } else if (this.state.styleSearch && beer.style && beer.style.toLowerCase().includes(this.state.text.toLowerCase())) {
                     return true
                 }
                 return false
@@ -135,6 +138,11 @@ class Header extends React.Component {
                         onValueChange={() => this._onChangeSearchField({barSearch : !this.state.barSearch})}
                     />
                     <Text style={styles.label}>Bar</Text>
+                    <CheckBox
+                        value={this.state.styleSearch}
+                        onValueChange={() => this._onChangeSearchField({styleSearch : !this.state.styleSearch})}
+                    />
+                    <Text style={styles.label}>Style</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={[styles.lineStart, styles.label]}>ABV</Text>
