@@ -189,6 +189,7 @@ class Header extends React.Component {
                         onValueChange={() => this._onChangeToggle({favourites : !this.state.favourites})}
                     />
                     <Text style={styles.label}>Favourites</Text>
+                    <Text style={styles.beerCount}>{this.props.beerCount} beers</Text>
                 </View>
             </View>
         )
@@ -199,6 +200,10 @@ const styles = StyleSheet.create({
     row : {
         width: Dimensions.get('window').width,
         flexDirection: 'row'
+    },
+    beerCount : {
+        marginLeft:'auto', 
+        marginRight : 5
     },
     lineStart : {
         marginLeft : 5 

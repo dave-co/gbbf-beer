@@ -81,6 +81,7 @@ class BeerList extends React.PureComponent {
             beerData={BEER_DATA}
             wants={this.state.wants}
             favourites={this.state.favourites}
+            beerCount={this.state.beerData.length}
           />
       }
 
