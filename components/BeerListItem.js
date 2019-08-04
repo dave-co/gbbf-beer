@@ -35,10 +35,10 @@ class BeerListItem extends React.PureComponent {
               <View style={styles.titleRow}>
                   <Text style={{flex : 4, color: textColor}}>{this.props.name}</Text>
                   {this.props.want && (
-                      <Text style={styles.flags}>Want</Text>
+                      <Text style={[styles.flags, styles.want]}>Want</Text>
                   )}
                   {this.props.favourite && (
-                      <Text style={styles.flags}>Favourite</Text>
+                      <Text style={[styles.flags, styles.favourite]}>Favourite</Text>
                   )}
               </View>
               {this.props.category === "International" &&(
@@ -108,7 +108,10 @@ const styles = StyleSheet.create({
         backgroundColor : '#000000'
     },
     container : {
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
+        borderWidth : 0.5,
+        borderRadius : 5,
+        borderColor : 'lightgray'
     },
     info : {
         flex : 1
@@ -124,7 +127,16 @@ const styles = StyleSheet.create({
         marginLeft : 10
     },
     flags : {
-        flex : 1
+        flex : 1,
+        textAlign: 'center',
+        borderWidth : 1,
+        borderRadius : 5
+    },
+    want : {
+        borderColor : 'lightseagreen'
+    },
+    favourite : {
+        borderColor : 'maroon'
     },
     label : {
         marginTop: 5

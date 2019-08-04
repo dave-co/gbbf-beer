@@ -110,7 +110,7 @@ class Header extends React.Component {
 
     render(){
         return (
-            <View >
+            <View style={styles.container}>
                 <View style={styles.row}>
                     <TextInput 
                         style={styles.lineStart}
@@ -197,6 +197,9 @@ class Header extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    container : {
+        backgroundColor : 'white'
+    },
     row : {
         width: Dimensions.get('window').width,
         flexDirection: 'row'
