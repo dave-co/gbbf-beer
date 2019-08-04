@@ -18,7 +18,8 @@ class Header extends React.Component {
             abv_6_7 : true,
             abv_7up : true,
             wants : false,
-            favourites : false
+            favourites : false,
+            tried : false
         }
         this.loadLocalData();
     }
@@ -94,11 +95,13 @@ class Header extends React.Component {
             filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 7)})
         }
 
-        if (this.state.wants || this.state.favourites) {
+        if (this.state.wants || this.state.favourites || this.state.tried) {
             filtered = filtered.filter(beer => {
                 if(this.state.wants && this.props.wants.get(beer.id)){
                     return true
                 } else if (this.state.favourites && this.props.favourites.get(beer.id)) {
+                    return true
+                } else if(this.state.tried && this.props.tried.get(beer.id)) {
                     return true
                 }
                 return false
@@ -189,6 +192,11 @@ class Header extends React.Component {
                         onValueChange={() => this._onChangeToggle({favourites : !this.state.favourites})}
                     />
                     <Text style={styles.label}>Favourites</Text>
+                    <CheckBox 
+                        value={this.state.tried}
+                        onValueChange={() => this._onChangeToggle({tried : !this.state.tried})}
+                    />
+                    <Text style={styles.label}>Tried</Text>
                     <Text style={styles.beerCount}>{this.props.beerCount} beers</Text>
                 </View>
             </View>
