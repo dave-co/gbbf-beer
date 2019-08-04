@@ -3,13 +3,15 @@ import BeerListItem from './BeerListItem'
 import { BEER_DATA } from '../beer-data'
 import Header from './Header'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { fetchWants, saveWants, fetchFavourites, saveFavourites } from '../storage/Storage'
+import { fetchWants, saveWants, fetchFavourites, saveFavourites, fetchRatings, saveRatings, fetchTried, saveTried } from '../storage/Storage'
 
 class BeerList extends React.PureComponent {
     state = {
         selected: (new Map()),
         wants: (new Map()),
         favourites : (new Map()),
+        tried : (new Map()),
+        ratings : (new Map()),
         beerData : BEER_DATA
     };
     async componentDidMount(){
@@ -17,6 +19,10 @@ class BeerList extends React.PureComponent {
         this.setState({wants})
         let favourites = await fetchFavourites()
         this.setState({favourites})
+        let tried = await fetchTried()
+        this.setState({tried})
+        let ratings = await fetchRatings()
+        this.setState({ratings})
     }
     
       _keyExtractor = (item, index) => item.id;
@@ -42,20 +48,46 @@ class BeerList extends React.PureComponent {
         });
     }
 
-      _onFavouriteChanged = async (id) => {
+    _onFavouriteChanged = async (id) => {
         this.setState((state) => {
             const favourites = new Map(state.favourites);
             favourites.set(id, !favourites.get(id)); // toggle
             return {favourites};
-          },
-          () => {
+        },
+        () => {
             saveFavourites(new Map(this.state.favourites))
             if (this.state.favourites.get(id) && this.state.wants.get(id)) {
                 // cant be a want and a fav at the same time
                 this._onWantChanged(id)
             }
-          });
-      }
+        });
+    }
+
+    _onTriedChanged = async (id) => {
+        this.setState((state) => {
+            const tried = new Map(state.tried);
+            tried.set(id, !tried.get(id)); // toggle
+            return {tried};
+        },
+        () => {
+            saveTried(new Map(this.state.tried))
+            if(this.state.tried.get(id) && this.state.wants.get(id)){
+                // can't be want and tried at the same time
+                this._onWantChanged(id)
+            }
+        });
+    }
+
+    _onRatingChanged = async (id, rating) => {
+        this.setState((state) => {
+            const ratings = new Map(state.ratings)
+            ratings.set(id, rating)
+            return {ratings};
+        },
+        () => {
+            saveRatings(new Map(this.state.ratings))
+        })
+    }
     
       _renderItem = ({item}) => (
         <BeerListItem
@@ -66,6 +98,10 @@ class BeerList extends React.PureComponent {
           want={!!this.state.wants.get(item.id)}
           onFavouriteChanged={this._onFavouriteChanged}
           favourite={!!this.state.favourites.get(item.id)}
+          onTriedChanged={this._onTriedChanged}
+          tried={this.state.tried.get(item.id)}
+          onRatingChanged={this._onRatingChanged}
+          rating={this.state.ratings.get(item.id)}
           name={item.name}
           bar={item.barCode}
           brewery={item.brewery}

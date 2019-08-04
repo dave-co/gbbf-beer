@@ -24,6 +24,20 @@ class BeerListItem extends React.PureComponent {
     _onFavouriteChanged = () => {
         this.props.onFavouriteChanged(this.props.id)
     }
+
+    _onTriedChanged = () => {
+        console.log('about to change from' + this.props.tried)
+        if(this.props.tried){
+            // tried is being deselected, so remove the rating
+            this._onRatingChanged(0)
+        }
+        this.props.onTriedChanged(this.props.id)
+    }
+
+    _onRatingChanged = (rating) => {
+        console.log(rating)
+        this.props.onRatingChanged(this.props.id, rating)
+    }
     
     render() {
         const textColor = this.props.selected ? 'red' : 'black';
@@ -39,6 +53,9 @@ class BeerListItem extends React.PureComponent {
                   )}
                   {this.props.favourite && (
                       <Text style={[styles.flags, styles.favourite]}>Favourite</Text>
+                  )}
+                  {(!this.props.favourite && this.props.tried) && (
+                      <Text style={[styles.flags, styles.tried]}>Tried</Text>
                   )}
               </View>
               {this.props.category === "International" &&(
@@ -65,7 +82,7 @@ class BeerListItem extends React.PureComponent {
               {this.props.selected && (
                 <View style={styles.controls}>
                     <CheckBox  
-                        disabled={this.props.favourite}
+                        disabled={this.props.favourite || this.props.tried}
                         value={this.props.want}
                         onValueChange={this._onWantChanged}
                     />
@@ -75,6 +92,20 @@ class BeerListItem extends React.PureComponent {
                         onValueChange={this._onFavouriteChanged}
                     />
                     <Text style={styles.label}>Favourite</Text>
+                    <CheckBox  
+                        value={this.props.tried}
+                        onValueChange={this._onTriedChanged}
+                    />
+                    <Text style={styles.label}>Tried</Text>
+                    {this.props.tried && (
+                        <View style={styles.ratings}>
+                            <Text onPress={() => this._onRatingChanged(1)} style={[styles.label, this.props.rating >= 1 ? styles.ratingSelected : styles.ratingNotSelected]}>{'\u2B50'}</Text>
+                            <Text onPress={() => this._onRatingChanged(2)} style={[styles.label, this.props.rating >= 2 ? styles.ratingSelected : styles.ratingNotSelected]}>{'\u2B50'}</Text>
+                            <Text onPress={() => this._onRatingChanged(3)} style={[styles.label, this.props.rating >= 3 ? styles.ratingSelected : styles.ratingNotSelected]}>{'\u2B50'}</Text>
+                            <Text onPress={() => this._onRatingChanged(4)} style={[styles.label, this.props.rating >= 4 ? styles.ratingSelected : styles.ratingNotSelected]}>{'\u2B50'}</Text>
+                            <Text onPress={() => this._onRatingChanged(5)} style={[styles.label, this.props.rating >= 5 ? styles.ratingSelected : styles.ratingNotSelected]}>{'\u2B50'}</Text>
+                        </View>
+                    )}
                 </View>
               )}
             </View>
@@ -138,6 +169,9 @@ const styles = StyleSheet.create({
     favourite : {
         borderColor : 'maroon'
     },
+    tried : {
+        borderColor : 'darkorchid'
+    },
     label : {
         marginTop: 5
     },
@@ -148,6 +182,15 @@ const styles = StyleSheet.create({
     infoRow : {
         flexDirection : 'row',
         marginLeft : 10
+    },
+    ratings : {
+        flexDirection : 'row'
+    },
+    ratingSelected : {
+        opacity : 1
+    },
+    ratingNotSelected : {
+        opacity : 0.3
     }
 })
 
