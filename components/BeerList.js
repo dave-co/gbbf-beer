@@ -79,6 +79,8 @@ class BeerList extends React.PureComponent {
           return <Header
             filterResult={this._filterResult}
             beerData={BEER_DATA}
+            wants={this.state.wants}
+            favourites={this.state.favourites}
           />
       }
 

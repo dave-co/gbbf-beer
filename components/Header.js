@@ -16,6 +16,8 @@ class Header extends React.Component {
             abv_5_6 : true,
             abv_6_7 : true,
             abv_7up : true,
+            wants : false,
+            favourites : false
         }
         this.loadLocalData();
     }
@@ -46,8 +48,8 @@ class Header extends React.Component {
         this.setState({text}, () => this._applySearchAndFilter());
     }
 
-    _onChangeAbv = (abv) => {
-        this.setState(abv, () => this._applySearchAndFilter())
+    _onChangeToggle = (toggle) => {
+        this.setState(toggle, () => this._applySearchAndFilter())
     }
 
     _onChangeSearchField = (searchField) => {
@@ -89,6 +91,17 @@ class Header extends React.Component {
             filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 7)})
         }
 
+        if (this.state.wants || this.state.favourites) {
+            filtered = filtered.filter(beer => {
+                if(this.state.wants && this.props.wants.get(beer.id)){
+                    return true
+                } else if (this.state.favourites && this.props.favourites.get(beer.id)) {
+                    return true
+                }
+                return false
+            })
+        }
+
         this.props.filterResult(filtered)
     }
 
@@ -97,6 +110,7 @@ class Header extends React.Component {
             <View >
                 <View style={styles.row}>
                     <TextInput 
+                        style={styles.lineStart}
                         placeholder='Search...'
                         onChangeText={(text) => this._onChangeSearch(text)}
                         value={this.state.text}
@@ -123,37 +137,50 @@ class Header extends React.Component {
                     <Text style={styles.label}>Bar</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text style={styles.label}>ABV</Text>
+                    <Text style={[styles.lineStart, styles.label]}>ABV</Text>
                     <CheckBox 
                         value={this.state.abv_0_3}
-                        onValueChange={() => this._onChangeAbv({abv_0_3 : !this.state.abv_0_3})}
+                        onValueChange={() => this._onChangeToggle({abv_0_3 : !this.state.abv_0_3})}
                     />
                     <Text style={styles.label}>{"<3"}</Text>
                     <CheckBox 
                         value={this.state.abv_3_4}
-                        onValueChange={() => this._onChangeAbv({abv_3_4 : !this.state.abv_3_4})}
+                        onValueChange={() => this._onChangeToggle({abv_3_4 : !this.state.abv_3_4})}
                     />
                     <Text style={styles.label}>3 - 4</Text>
                     <CheckBox 
                         value={this.state.abv_4_5}
-                        onValueChange={() => this._onChangeAbv({abv_4_5 : !this.state.abv_4_5})}
+                        onValueChange={() => this._onChangeToggle({abv_4_5 : !this.state.abv_4_5})}
                     />
                     <Text style={styles.label}>4 - 5</Text>
                     <CheckBox 
                         value={this.state.abv_5_6}
-                        onValueChange={() => this._onChangeAbv({abv_5_6 : !this.state.abv_5_6})}
+                        onValueChange={() => this._onChangeToggle({abv_5_6 : !this.state.abv_5_6})}
                     />
                     <Text style={styles.label}>5 - 6</Text>
                     <CheckBox 
                         value={this.state.abv_6_7}
-                        onValueChange={() => this._onChangeAbv({abv_6_7 : !this.state.abv_6_7})}
+                        onValueChange={() => this._onChangeToggle({abv_6_7 : !this.state.abv_6_7})}
                     />
                     <Text style={styles.label}>6 - 7</Text>
                     <CheckBox 
                         value={this.state.abv_7up}
-                        onValueChange={() => this._onChangeAbv({abv_7up : !this.state.abv_7up})}
+                        onValueChange={() => this._onChangeToggle({abv_7up : !this.state.abv_7up})}
                     />
                     <Text style={styles.label}>7+</Text>
+                </View>
+                <View style={styles.row}>
+                    <CheckBox 
+                        style={styles.lineStart}
+                        value={this.state.wants}
+                        onValueChange={() => this._onChangeToggle({wants : !this.state.wants})}
+                    />
+                    <Text style={styles.label}>Wants</Text>
+                    <CheckBox 
+                        value={this.state.favourites}
+                        onValueChange={() => this._onChangeToggle({favourites : !this.state.favourites})}
+                    />
+                    <Text style={styles.label}>Favourites</Text>
                 </View>
             </View>
         )
@@ -164,6 +191,9 @@ const styles = StyleSheet.create({
     row : {
         width: Dimensions.get('window').width,
         flexDirection: 'row'
+    },
+    lineStart : {
+        marginLeft : 5 
     },
     label : {
         marginTop: 5
