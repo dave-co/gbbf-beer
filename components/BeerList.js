@@ -3,13 +3,18 @@ import BeerListItem from './BeerListItem'
 import { BEER_DATA } from '../beer-data'
 import Header from './Header'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { fetchWants, saveWants } from '../storage/Storage'
 
 class BeerList extends React.PureComponent {
     state = {
         selected: (new Map()),
-        want: (new Map()),
+        wants: (new Map()),
         beerData : BEER_DATA
     };
+    async componentDidMount(){
+        let wants = await fetchWants()
+        this.setState({wants})
+    }
     
       _keyExtractor = (item, index) => item.id;
     
@@ -23,11 +28,14 @@ class BeerList extends React.PureComponent {
         });
       };
 
-      _onWantChanged = (id) => {
+     _onWantChanged = async (id) => {
         this.setState((state) => {
-            const want = new Map(state.want);
-            want.set(id, !want.get(id)); // toggle
-            return {want};
+            const wants = new Map(state.wants);
+            wants.set(id, !wants.get(id)); // toggle
+            return {wants};
+          },
+          () => {
+              saveWants(new Map(this.state.wants))
           });
       }
     
@@ -37,7 +45,7 @@ class BeerList extends React.PureComponent {
           onPressItem={this._onPressItem}
           selected={!!this.state.selected.get(item.id)}
           onWantChanged={this._onWantChanged}
-          want={!!this.state.want.get(item.id)}
+          want={!!this.state.wants.get(item.id)}
           name={item.name}
           bar={item.barCode}
           brewery={item.brewery}

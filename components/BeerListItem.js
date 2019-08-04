@@ -28,7 +28,12 @@ class BeerListItem extends React.PureComponent {
         return (
           <TouchableOpacity onPress={this._onPress}>
             <View style={styles.container}>
-              <Text style={{marginLeft : 5, color: textColor}}>{this.props.name}</Text>
+              <View style={styles.titleRow}>
+                  <Text style={{flex : 4, color: textColor}}>{this.props.name}</Text>
+                  {this.props.want && (
+                      <Text style={styles.flags}>Want</Text>
+                  )}
+              </View>
               <View style={styles.infoRow}>
                   <Text style={styles.infoWide}>{this.props.brewery}</Text>
                   <Text style={styles.info}>{beerStyle}</Text>
@@ -48,7 +53,7 @@ class BeerListItem extends React.PureComponent {
                     /><Text style={styles.label}>Want</Text>
                 </View>
               )}
-            </View> 
+            </View>
           </TouchableOpacity>
         );
     }
@@ -94,8 +99,15 @@ const styles = StyleSheet.create({
         flexDirection : 'row',
         marginLeft : 10
     },
+    flags : {
+        flex : 1
+    },
     label : {
         marginTop: 5
+    },
+    titleRow : {
+        flexDirection : 'row',
+        marginLeft : 5
     },
     infoRow : {
         flexDirection : 'row',
