@@ -41,12 +41,22 @@ class BeerListItem extends React.PureComponent {
                       <Text style={styles.flags}>Favourite</Text>
                   )}
               </View>
-              <View style={styles.infoRow}>
-                  <Text style={styles.infoWide}>{this.props.brewery}</Text>
-                  <Text style={styles.info}>{beerStyle}</Text>
-                  <View style={[styles.colourBase, styles[colourStyle]]} />
-                  <Text style={styles.info}>{this.props.bar}</Text>
-              </View>
+              {this.props.category === "International" &&(
+                  <View style={styles.infoRow}>
+                      <Text style={styles.infoWide}>{this.props.brewery}</Text>
+                      <Text style={styles.info}>{this.props.dispenseMethod}</Text>
+                      <Text style={styles.info}>{this.props.country}</Text>
+                      <Text style={styles.info}>{this.props.bar}</Text>
+                  </View>
+              )}
+              {this.props.category === "Real Ale" && (
+                  <View style={styles.infoRow}>
+                      <Text style={styles.infoWide}>{this.props.brewery}</Text>
+                      <Text style={styles.info}>{beerStyle}</Text>
+                      <View style={[styles.colourBase, styles[colourStyle]]} />
+                      <Text style={styles.info}>{this.props.bar}</Text>
+                  </View>
+              )}
               {this.props.selected && (
                 <View style={styles.notes}>
                     <Text>{this.props.notes}</Text>

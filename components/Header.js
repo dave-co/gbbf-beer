@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     beerCount : {
+        marginTop: 5,
         marginLeft:'auto', 
         marginRight : 5
     },
