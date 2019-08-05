@@ -1,4 +1,5 @@
 import React from 'react';
+import BeerEntry from './BeerEntry'
 import { StyleSheet, Text, View, TextInput, Dimensions, CheckBox, AsyncStorage } from 'react-native';
 
 class Header extends React.Component {
@@ -19,7 +20,8 @@ class Header extends React.Component {
             abv_7up : true,
             wants : false,
             favourites : false,
-            tried : false
+            tried : false,
+            showBeerEntry :false
         }
         this.loadLocalData();
     }
@@ -197,8 +199,16 @@ class Header extends React.Component {
                         onValueChange={() => this._onChangeToggle({tried : !this.state.tried})}
                     />
                     <Text style={styles.label}>Tried</Text>
+                    {this.state.showBeerEntry 
+                        ? <Text style={styles.addRemove} onPress={() => this.setState({showBeerEntry : !this.state.showBeerEntry})}>{'\u2796'}Close</Text> 
+                        : <Text style={styles.addRemove} onPress={() => this.setState({showBeerEntry : !this.state.showBeerEntry})}>{'\u2795'}Add Beer</Text>}
                     <Text style={styles.beerCount}>{this.props.beerCount} beers</Text>
                 </View>
+                {this.state.showBeerEntry && (
+                    <View style={styles.row}>
+                        <BeerEntry onAddBeer={this.props.onAddBeer}/>
+                    </View>
+                )}
             </View>
         )
     }
@@ -222,6 +232,10 @@ const styles = StyleSheet.create({
     },
     label : {
         marginTop: 5
+    },
+    addRemove : {
+        marginTop: 5,
+        marginLeft : 15
     }
 })
 

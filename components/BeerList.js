@@ -3,7 +3,7 @@ import BeerListItem from './BeerListItem'
 import { BEER_DATA } from '../beer-data'
 import Header from './Header'
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { fetchWants, saveWants, fetchFavourites, saveFavourites, fetchRatings, saveRatings, fetchTried, saveTried } from '../storage/Storage'
+import { fetchWants, saveWants, fetchFavourites, saveFavourites, fetchRatings, saveRatings, fetchTried, saveTried, fetchExtraBeers, saveExtraBeers } from '../storage/Storage'
 
 class BeerList extends React.PureComponent {
     state = {
@@ -12,6 +12,7 @@ class BeerList extends React.PureComponent {
         favourites : (new Map()),
         tried : (new Map()),
         ratings : (new Map()),
+        extraBeers : (new Map()),
         beerData : BEER_DATA
     };
     async componentDidMount(){
@@ -23,6 +24,8 @@ class BeerList extends React.PureComponent {
         this.setState({tried})
         let ratings = await fetchRatings()
         this.setState({ratings})
+        let extraBeers = await fetchExtraBeers()
+        this.setState({extraBeers})
     }
     
       _keyExtractor = (item, index) => item.id;
@@ -88,6 +91,43 @@ class BeerList extends React.PureComponent {
             saveRatings(new Map(this.state.ratings))
         })
     }
+
+    _onAddBeer = (beer) => {
+        console.log(beer)
+        console.log(this.state.extraBeers)
+        var maxId = 5000
+        for (const [key, value] of this.state.extraBeers.entries()) {
+            console.log(key, value);
+            if (value && value.id && parseInt(value.id, 10) > maxId) {
+                maxId = parseInt(value.id, 10)
+            }
+        }
+        maxId += 1
+        console.log(maxId)
+        beer.id = maxId.toString()
+        this.setState((state) => {
+            const extraBeers = new Map(state.extraBeers)
+            extraBeers.set(beer.id, beer)
+            return {extraBeers};
+        },
+        () => {
+            saveExtraBeers(new Map(this.state.extraBeers))
+        })
+    }
+
+    _onDeleteManualEntry = (id) => {
+        if(this.state.extraBeers.has(id)){
+            console.log('id=' + id + ' found')
+            this.setState((state) => {
+                const extraBeers = new Map(state.extraBeers)
+                extraBeers.delete(id)
+                return {extraBeers};
+            },
+            () => {
+                saveExtraBeers(new Map(this.state.extraBeers))
+            })
+        }
+    }
     
       _renderItem = ({item}) => (
         <BeerListItem
@@ -111,17 +151,20 @@ class BeerList extends React.PureComponent {
           category={item.category}
           dispenseMethod={item.dispenseMethod}
           country={item.country}
+          isManualEntry={item.isManualEntry}
+          onDeleteManualEntry={this._onDeleteManualEntry}
         />
       );
 
       _renderHeader = () => {
           return <Header
             filterResult={this._filterResult}
-            beerData={BEER_DATA}
+            beerData={BEER_DATA.concat(Array.from( this.state.extraBeers.values() ))}
             wants={this.state.wants}
             favourites={this.state.favourites}
             tried={this.state.tried}
             beerCount={this.state.beerData.length}
+            onAddBeer={this._onAddBeer}
           />
       }
 

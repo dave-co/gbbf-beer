@@ -5,6 +5,7 @@ const WANTS_KEY = 'wants'
 const FAVOURITES_KEY = 'favourites'
 const RATINGS_KEY = 'ratings'
 const TRIED_KEY = 'tried'
+const EXTRA_BEERS = 'extraBeers'
 
 export const fetchWants = async () => {
     try{
@@ -89,6 +90,29 @@ export const saveTried = async (tried) => {
     try {
         let str = JSON.stringify([...tried])
         await AsyncStorage.setItem(TRIED_KEY, str)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const fetchExtraBeers = async () => {
+    try{
+        const extraBeers = await AsyncStorage.getItem(EXTRA_BEERS)
+        if(extraBeers !== null && extraBeers !== '{}'){
+            return new Map(JSON.parse(extraBeers))
+        }
+        return new Map()
+    } catch (error){
+        console.error(error)
+    }
+    return new Map();
+}
+
+export const saveExtraBeers = async (extraBeers) => {
+    try {
+        let str = JSON.stringify([...extraBeers])
+        // console.log('str=' + str)
+        await AsyncStorage.setItem(EXTRA_BEERS, str)
     } catch (error) {
         console.error(error)
     }

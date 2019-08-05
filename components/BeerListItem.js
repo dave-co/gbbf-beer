@@ -36,6 +36,10 @@ class BeerListItem extends React.PureComponent {
     _onRatingChanged = (rating) => {
         this.props.onRatingChanged(this.props.id, rating)
     }
+
+    _onDeleteManualEntry = () => {
+        this.props.onDeleteManualEntry(this.props.id)
+    }
     
     render() {
         const textColor = this.props.selected ? 'red' : 'black';
@@ -104,6 +108,11 @@ class BeerListItem extends React.PureComponent {
                             <Text onPress={() => this._onRatingChanged(5)} style={[styles.label, this.props.rating >= 5 ? styles.ratingSelected : styles.ratingNotSelected]}>{'\u2B50'}</Text>
                         </View>
                     )}
+                </View>
+              )}
+              {(this.props.selected && this.props.isManualEntry) && (
+                <View style={styles.infoRow}>
+                  <Text style={styles.delete} onPress={this._onDeleteManualEntry}>Delete</Text>
                 </View>
               )}
             </View>
@@ -189,6 +198,9 @@ const styles = StyleSheet.create({
     },
     ratingNotSelected : {
         opacity : 0.3
+    },
+    delete : {
+        marginBottom : 5
     }
 })
 
