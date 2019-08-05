@@ -1013,5 +1013,9 @@ export const BEER_DATA = [
     {"id":"1009","brewery":"Funky Fluid","notes":"","name":"Everyday Hazy APA","abv":"4.5","dispenseMethod":"","country":"ROTW","barName":"Olaf's German & Czech Bar - B22","barCode":"B22","category":"International"},
     {"id":"1010","brewery":"Pracownia Piwa","notes":"","name":"Dwa Smoki","abv":"5.8","dispenseMethod":"","country":"ROTW","barName":"Olaf's German & Czech Bar - B22","barCode":"B22","category":"International"},
     {"id":"1011","brewery":"Pracownia Piwa","notes":"","name":"Wi?niowy Twist","abv":"4.5","dispenseMethod":"","country":"ROTW","barName":"Olaf's German & Czech Bar - B22","barCode":"B22","category":"International"},
-    {"id":"1012","brewery":"Pracownia Piwa","notes":"","name":"Tofik","abv":"6.1","dispenseMethod":"","country":"ROTW","barName":"Olaf's German & Czech Bar - B22","barCode":"B22","category":"International"}
+    {"id":"1012","brewery":"Pracownia Piwa","notes":"","name":"Tofik","abv":"6.1","dispenseMethod":"","country":"ROTW","barName":"Olaf's German & Czech Bar - B22","barCode":"B22","category":"International"},
+    {"id":"1013","brewery":"T.E.A. Time","notes":"","name":"Real Ale is Coming Home","abv":"4.0","dispenseMethod":"Cask","country":"ROTW","barName":"Keith's Rest of Europe Bar - B21","barCode":"B21","category":"International"},
+    {"id":"1014","brewery":"T.E.A. Time","notes":"","name":"Anaconda","abv":"7.0","dispenseMethod":"","country":"ROTW","barName":"Keith's Rest of Europe Bar - B21","barCode":"B21","category":"International"},
+    {"id":"1015","brewery":"T.E.A. Time","notes":"N/A","name":"Smooth Hoperator","abv":"5.4","dispenseMethod":"Cask","country":"ROTW","barName":"Keith' Rest of Europe Bar - B21","barCode":"B21","category":"International"},
+    {"id":"1016","brewery":"T.E A. Time","notes":"","name":"Black Prince","abv":"13.5","dispenseMethod":"","country":"ROTW","barName":"Keith's Rest of Europe Bar - B21","barCode":"B21","category":"International"}
 ]
