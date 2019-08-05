@@ -1,6 +1,7 @@
 import React from 'react';
 import BeerEntry from './BeerEntry'
 import { StyleSheet, Text, View, TextInput, Dimensions, CheckBox, AsyncStorage } from 'react-native';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 class Header extends React.Component {
     constructor(props) {
@@ -21,9 +22,18 @@ class Header extends React.Component {
             wants : false,
             favourites : false,
             tried : false,
-            showBeerEntry :false
+            showBeerEntry :false,
+            abv: [0, 15]
         }
         this.loadLocalData();
+    }
+
+    _onChangeAbv = (abv) => {
+        this.setState({abv});
+    }
+
+    _onChangeAbvFinish = (abv) => {
+        this.setState({abv}, () => this._applySearchAndFilter());
     }
 
     async saveLocalData(state) {
@@ -60,7 +70,7 @@ class Header extends React.Component {
         this.setState(searchField, () => this._applySearchAndFilter())
     }
 
-    _applySearchAndFilter(){
+    _applySearchAndFilter() {
         let filtered = this.props.beerData
         if (this.state.text && this.state.text !== "") {
             filtered = filtered.filter(beer => {
@@ -78,24 +88,6 @@ class Header extends React.Component {
                 return false
             })
         }
-        if (!this.state.abv_0_3) {
-            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) < 3)})
-        }
-        if (!this.state.abv_3_4) {
-            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 3 && parseFloat(beer.abv) < 4)})
-        }
-        if (!this.state.abv_4_5) {
-            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 4 && parseFloat(beer.abv) < 5)})
-        }
-        if (!this.state.abv_5_6) {
-            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 5 && parseFloat(beer.abv) < 6)})
-        }
-        if (!this.state.abv_6_7) {
-            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 6 && parseFloat(beer.abv) < 7)})
-        }
-        if (!this.state.abv_7up) {
-            filtered = filtered.filter(beer => { return !(beer.abv && parseFloat(beer.abv) >= 7)})
-        }
 
         if (this.state.wants || this.state.favourites || this.state.tried) {
             filtered = filtered.filter(beer => {
@@ -110,10 +102,14 @@ class Header extends React.Component {
             })
         }
 
+        filtered = filtered.filter(beer => {
+            return beer.abv && parseFloat(beer.abv) >= this.state.abv[0] && parseFloat(beer.abv) <= this.state.abv[1];
+        });
+
         this.props.filterResult(filtered)
     }
 
-    render(){
+    render() {
         return (
             <View style={styles.container}>
                 <View style={styles.row}>
@@ -150,37 +146,16 @@ class Header extends React.Component {
                     <Text style={styles.label}>Style</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text style={[styles.lineStart, styles.label]}>ABV</Text>
-                    <CheckBox 
-                        value={this.state.abv_0_3}
-                        onValueChange={() => this._onChangeToggle({abv_0_3 : !this.state.abv_0_3})}
+                    <MultiSlider
+                        values={[this.state.abv[0], this.state.abv[1]]}
+                        sliderLength={300}
+                        onValuesChange={this._onChangeAbv}
+                        onValuesChangeFinish={this._onChangeAbvFinish}
+                        touchDimensions={{height: 1000, width: 1000,borderRadius: 1000, slipDisplacement: 0}}
+                        optionsArray={[0, 3, 4, 5, 6, 7, 8, 10, 12, 15]}
+                        step={1}
                     />
-                    <Text style={styles.label}>{"<3"}</Text>
-                    <CheckBox 
-                        value={this.state.abv_3_4}
-                        onValueChange={() => this._onChangeToggle({abv_3_4 : !this.state.abv_3_4})}
-                    />
-                    <Text style={styles.label}>3 - 4</Text>
-                    <CheckBox 
-                        value={this.state.abv_4_5}
-                        onValueChange={() => this._onChangeToggle({abv_4_5 : !this.state.abv_4_5})}
-                    />
-                    <Text style={styles.label}>4 - 5</Text>
-                    <CheckBox 
-                        value={this.state.abv_5_6}
-                        onValueChange={() => this._onChangeToggle({abv_5_6 : !this.state.abv_5_6})}
-                    />
-                    <Text style={styles.label}>5 - 6</Text>
-                    <CheckBox 
-                        value={this.state.abv_6_7}
-                        onValueChange={() => this._onChangeToggle({abv_6_7 : !this.state.abv_6_7})}
-                    />
-                    <Text style={styles.label}>6 - 7</Text>
-                    <CheckBox 
-                        value={this.state.abv_7up}
-                        onValueChange={() => this._onChangeToggle({abv_7up : !this.state.abv_7up})}
-                    />
-                    <Text style={styles.label}>7+</Text>
+                    <Text style={styles.text}>{`ABV ${this.state.abv[0]} - ${this.state.abv[1]}`}</Text>
                 </View>
                 <View style={styles.row}>
                     <CheckBox 
