@@ -22,7 +22,6 @@ export const fetchWants = async () => {
 export const saveWants = async (wants) => {
     try {
         let str = JSON.stringify([...wants])
-        // console.log('str=' + str)
         await AsyncStorage.setItem(WANTS_KEY, str)
     } catch (error) {
         console.error(error)
@@ -45,7 +44,6 @@ export const fetchFavourites = async () => {
 export const saveFavourites = async (favourites) => {
     try {
         let str = JSON.stringify([...favourites])
-        // console.log('str=' + str)
         await AsyncStorage.setItem(FAVOURITES_KEY, str)
     } catch (error) {
         console.error(error)
@@ -68,7 +66,6 @@ export const fetchRatings = async () => {
 export const saveRatings = async (ratings) => {
     try {
         let str = JSON.stringify([...ratings])
-        // console.log('str=' + str)
         await AsyncStorage.setItem(RATINGS_KEY, str)
     } catch (error) {
         console.error(error)
@@ -91,7 +88,6 @@ export const fetchTried = async () => {
 export const saveTried = async (tried) => {
     try {
         let str = JSON.stringify([...tried])
-        // console.log('str=' + str)
         await AsyncStorage.setItem(TRIED_KEY, str)
     } catch (error) {
         console.error(error)

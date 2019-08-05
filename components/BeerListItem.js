@@ -26,7 +26,6 @@ class BeerListItem extends React.PureComponent {
     }
 
     _onTriedChanged = () => {
-        console.log('about to change from' + this.props.tried)
         if(this.props.tried){
             // tried is being deselected, so remove the rating
             this._onRatingChanged(0)
@@ -35,7 +34,6 @@ class BeerListItem extends React.PureComponent {
     }
 
     _onRatingChanged = (rating) => {
-        console.log(rating)
         this.props.onRatingChanged(this.props.id, rating)
     }
     
