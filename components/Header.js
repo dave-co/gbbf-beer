@@ -23,7 +23,7 @@ class Header extends React.Component {
             favourites : false,
             tried : false,
             showBeerEntry :false,
-            abv: [0, 15]
+            abv: [0, 20]
         }
         this.loadLocalData();
     }
@@ -152,10 +152,10 @@ class Header extends React.Component {
                         onValuesChange={this._onChangeAbv}
                         onValuesChangeFinish={this._onChangeAbvFinish}
                         touchDimensions={{height: 1000, width: 1000,borderRadius: 1000, slipDisplacement: 0}}
-                        optionsArray={[0, 3, 4, 5, 6, 7, 8, 10, 12, 15]}
+                        optionsArray={[0, 3, 4, 5, 6, 7, 8, 10, 12, 15, 20]}
                         step={1}
                     />
-                    <Text style={styles.text}>{`ABV ${this.state.abv[0]} - ${this.state.abv[1]}`}</Text>
+                    <Text style={styles.text}>{`ABV ${this.state.abv[0]} - ${this.state.abv[1] == 20 ? 'Antifreeze' : this.state.abv[1]}`}</Text>
                 </View>
                 <View style={styles.row}>
                     <CheckBox 
