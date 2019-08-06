@@ -1017,5 +1017,6 @@ export const BEER_DATA = [
     {"id":"1013","brewery":"T.E.A. Time","notes":"","name":"Real Ale is Coming Home","abv":"4.0","dispenseMethod":"Cask","country":"ROTW","barName":"Keith's Rest of Europe Bar - B21","barCode":"B21","category":"International"},
     {"id":"1014","brewery":"T.E.A. Time","notes":"","name":"Anaconda","abv":"7.0","dispenseMethod":"","country":"ROTW","barName":"Keith's Rest of Europe Bar - B21","barCode":"B21","category":"International"},
     {"id":"1015","brewery":"T.E.A. Time","notes":"N/A","name":"Smooth Hoperator","abv":"5.4","dispenseMethod":"Cask","country":"ROTW","barName":"Keith' Rest of Europe Bar - B21","barCode":"B21","category":"International"},
-    {"id":"1016","brewery":"T.E A. Time","notes":"","name":"Black Prince","abv":"13.5","dispenseMethod":"","country":"ROTW","barName":"Keith's Rest of Europe Bar - B21","barCode":"B21","category":"International"}
+    {"id":"1016","brewery":"T.E A. Time","notes":"","name":"Black Prince","abv":"13.5","dispenseMethod":"","country":"ROTW","barName":"Keith's Rest of Europe Bar - B21","barCode":"B21","category":"International"},
+    {"id":"1017","brewery":"Wild Beer Co","notes":"Dave's late addition","name":"P.I.P.A","abv":"6","style":"IPA","colour":"2","barName":"Wild Beer Co. - B19c","barCode":"B19c","category":"Real Ale"}
 ]
