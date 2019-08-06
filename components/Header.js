@@ -23,9 +23,28 @@ class Header extends React.Component {
             favourites : false,
             tried : false,
             showBeerEntry :false,
-            abv: [0, 20]
+            abv: [0, 100]
         }
         this.loadLocalData();
+    }
+
+    luckyDip = () => {
+        let luckyBeer;
+        const maxTries = 100;
+        let i = 0;
+        while (!luckyBeer && i < maxTries) {
+            i++;
+            const beer = this.props.beerData[this.getRandomBeerIndex()];
+            if (!beer.tried && !beer.favourites) {
+                luckyBeer = beer;
+            }
+        }
+        this.props.selectItem(luckyBeer.id);
+        this.props.filterResult([luckyBeer]);
+    }
+
+    getRandomBeerIndex = () => {
+        return Math.floor(Math.random() * this.props.beerData.length);
     }
 
     _onChangeAbv = (abv) => {
@@ -114,7 +133,6 @@ class Header extends React.Component {
             <View style={styles.container}>
                 <View style={styles.row}>
                     <TextInput 
-                        style={styles.lineStart}
                         placeholder='Search...'
                         onChangeText={(text) => this._onChangeSearch(text)}
                         value={this.state.text}
@@ -146,20 +164,21 @@ class Header extends React.Component {
                     <Text style={styles.label}>Style</Text>
                 </View>
                 <View style={styles.row}>
-                    <MultiSlider
-                        values={[this.state.abv[0], this.state.abv[1]]}
-                        sliderLength={300}
-                        onValuesChange={this._onChangeAbv}
-                        onValuesChangeFinish={this._onChangeAbvFinish}
-                        touchDimensions={{height: 1000, width: 1000,borderRadius: 1000, slipDisplacement: 0}}
-                        optionsArray={[0, 3, 4, 5, 6, 7, 8, 10, 12, 15, 20]}
-                        step={1}
-                    />
-                    <Text style={styles.text}>{`ABV ${this.state.abv[0]} - ${this.state.abv[1] == 20 ? 'Antifreeze' : this.state.abv[1]}`}</Text>
+                    <View style={styles.abv}>
+                        <MultiSlider
+                            values={[this.state.abv[0], this.state.abv[1]]}
+                            sliderLength={250}
+                            onValuesChange={this._onChangeAbv}
+                            onValuesChangeFinish={this._onChangeAbvFinish}
+                            touchDimensions={{height: 5000, width: 5000, borderRadius: 5000, slipDisplacement: 0}}
+                            optionsArray={[0, 3, 4, 5, 6, 7, 8, 10, 12, 15, 100]}
+                            step={1}
+                        />
+                    </View>
+                    <Text style={styles.abvLabel}>{`ABV ${this.state.abv[0]} - ${this.state.abv[1] == 100 ? 'Antifreeze' : this.state.abv[1]}`}</Text>
                 </View>
                 <View style={styles.row}>
                     <CheckBox 
-                        style={styles.lineStart}
                         value={this.state.wants}
                         onValueChange={() => this._onChangeToggle({wants : !this.state.wants})}
                     />
@@ -174,9 +193,7 @@ class Header extends React.Component {
                         onValueChange={() => this._onChangeToggle({tried : !this.state.tried})}
                     />
                     <Text style={styles.label}>Tried</Text>
-                    {this.state.showBeerEntry 
-                        ? <Text style={styles.addRemove} onPress={() => this.setState({showBeerEntry : !this.state.showBeerEntry})}>{'\u2796'}Close</Text> 
-                        : <Text style={styles.addRemove} onPress={() => this.setState({showBeerEntry : !this.state.showBeerEntry})}>{'\u2795'}Add Beer</Text>}
+                    <Text style={styles.luckyDip} onPress={() => this.luckyDip()}>{'\u2728'}Lucky Dip</Text>
                     <Text style={styles.beerCount}>{this.props.beerCount} beers</Text>
                 </View>
                 {this.state.showBeerEntry && (
@@ -195,22 +212,29 @@ const styles = StyleSheet.create({
     },
     row : {
         width: Dimensions.get('window').width,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginLeft: 5
     },
     beerCount : {
         marginTop: 5,
-        marginLeft:'auto', 
-        marginRight : 5
-    },
-    lineStart : {
-        marginLeft : 5 
+        marginLeft: 10,
+        marginRight: 5
     },
     label : {
         marginTop: 5
     },
-    addRemove : {
+    abv : {
         marginTop: 5,
-        marginLeft : 15
+        marginLeft : 15,
+        marginRight : 10
+    },
+    abvLabel: {
+        marginLeft: 5,
+        marginTop: 18
+    },
+    luckyDip: {
+        marginTop: 5,
+        marginLeft: 5
     }
 })
 

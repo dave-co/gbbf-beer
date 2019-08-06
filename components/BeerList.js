@@ -39,7 +39,7 @@ class BeerList extends React.PureComponent {
           return {selected};
         });
       };
-
+      
     _onWantChanged = async (id) => {
         this.setState((state) => {
             const wants = new Map(state.wants);
@@ -159,6 +159,7 @@ class BeerList extends React.PureComponent {
       _renderHeader = () => {
           return <Header
             filterResult={this._filterResult}
+            selectItem={this._onPressItem}
             beerData={BEER_DATA.concat(Array.from( this.state.extraBeers.values() ))}
             wants={this.state.wants}
             favourites={this.state.favourites}
