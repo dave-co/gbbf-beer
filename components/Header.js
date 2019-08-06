@@ -1,6 +1,7 @@
 import React from 'react';
 import BeerEntry from './BeerEntry'
-import { StyleSheet, Text, View, TextInput, Dimensions, CheckBox, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Dimensions, AsyncStorage } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 class Header extends React.Component {
@@ -120,30 +121,45 @@ class Header extends React.Component {
                         value={this.state.text}
                     />
                     <CheckBox
-                        value={this.state.nameSearch}
-                        onValueChange={() => this._onChangeSearchField({nameSearch : !this.state.nameSearch})}
+                        title="Name"
+                        checked={this.state.nameSearch}
+                        onPress={() => this._onChangeSearchField({nameSearch : !this.state.nameSearch})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Name</Text>
                     <CheckBox
-                        value={this.state.notesSearch}
-                        onValueChange={() => this._onChangeSearchField({notesSearch : !this.state.notesSearch})}
+                        title="Notes"
+                        checked={this.state.notesSearch}
+                        onPress={() => this._onChangeSearchField({notesSearch : !this.state.notesSearch})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Notes</Text>
                     <CheckBox
-                        value={this.state.brewerySearch}
-                        onValueChange={() => this._onChangeSearchField({brewerySearch : !this.state.brewerySearch})}
+                        title="Brewery"
+                        checked={this.state.brewerySearch}
+                        onPress={() => this._onChangeSearchField({brewerySearch : !this.state.brewerySearch})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Brewery</Text>
                     <CheckBox
-                        value={this.state.barSearch}
-                        onValueChange={() => this._onChangeSearchField({barSearch : !this.state.barSearch})}
+                        title="Bar"
+                        checked={this.state.barSearch}
+                        onPress={() => this._onChangeSearchField({barSearch : !this.state.barSearch})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Bar</Text>
                     <CheckBox
-                        value={this.state.styleSearch}
-                        onValueChange={() => this._onChangeSearchField({styleSearch : !this.state.styleSearch})}
+                        title="Style"
+                        checked={this.state.styleSearch}
+                        onPress={() => this._onChangeSearchField({styleSearch : !this.state.styleSearch})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Style</Text>
                 </View>
                 <View style={styles.row}>
                     <MultiSlider
@@ -152,28 +168,37 @@ class Header extends React.Component {
                         onValuesChange={this._onChangeAbv}
                         onValuesChangeFinish={this._onChangeAbvFinish}
                         touchDimensions={{height: 1000, width: 1000,borderRadius: 1000, slipDisplacement: 0}}
-                        optionsArray={[0, 3, 4, 5, 6, 7, 8, 10, 12, 15]}
+                        optionsArray={[0, 3, 4, 5, 6, 7, 8, 10, 12, 15, 18]}
                         step={1}
                     />
                     <Text style={styles.text}>{`ABV ${this.state.abv[0]} - ${this.state.abv[1]}`}</Text>
                 </View>
                 <View style={styles.row}>
                     <CheckBox 
+                        title="Wants"
                         style={styles.lineStart}
-                        value={this.state.wants}
-                        onValueChange={() => this._onChangeToggle({wants : !this.state.wants})}
+                        checked={this.state.wants}
+                        onPress={() => this._onChangeToggle({wants : !this.state.wants})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Wants</Text>
                     <CheckBox 
-                        value={this.state.favourites}
-                        onValueChange={() => this._onChangeToggle({favourites : !this.state.favourites})}
+                        title="Favourites"
+                        checked={this.state.favourites}
+                        onPress={() => this._onChangeToggle({favourites : !this.state.favourites})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Favourites</Text>
                     <CheckBox 
-                        value={this.state.tried}
-                        onValueChange={() => this._onChangeToggle({tried : !this.state.tried})}
+                        title="Tried"
+                        checked={this.state.tried}
+                        onPress={() => this._onChangeToggle({tried : !this.state.tried})}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Tried</Text>
                     {this.state.showBeerEntry 
                         ? <Text style={styles.addRemove} onPress={() => this.setState({showBeerEntry : !this.state.showBeerEntry})}>{'\u2796'}Close</Text> 
                         : <Text style={styles.addRemove} onPress={() => this.setState({showBeerEntry : !this.state.showBeerEntry})}>{'\u2795'}Add Beer</Text>}
@@ -195,7 +220,8 @@ const styles = StyleSheet.create({
     },
     row : {
         width: Dimensions.get('window').width,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     beerCount : {
         marginTop: 5,
@@ -203,7 +229,8 @@ const styles = StyleSheet.create({
         marginRight : 5
     },
     lineStart : {
-        marginLeft : 5 
+        marginLeft : 5,
+        width: 100
     },
     label : {
         marginTop: 5

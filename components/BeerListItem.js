@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, CheckBox  } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 
 class BeerListItem extends React.PureComponent {
     _onPress = () => {
@@ -84,21 +85,30 @@ class BeerListItem extends React.PureComponent {
               {this.props.selected && (
                 <View style={styles.controls}>
                     <CheckBox  
+                        title="Want"
                         disabled={this.props.favourite || this.props.tried}
-                        value={this.props.want}
-                        onValueChange={this._onWantChanged}
+                        checked={this.props.want}
+                        onPress={this._onWantChanged}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Want</Text>
                     <CheckBox  
-                        value={this.props.favourite}
-                        onValueChange={this._onFavouriteChanged}
+                        title="Favourite"
+                        checked={this.props.favourite}
+                        onPress={this._onFavouriteChanged}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Favourite</Text>
                     <CheckBox  
-                        value={this.props.tried}
-                        onValueChange={this._onTriedChanged}
+                        title="Tried"
+                        checked={this.props.tried}
+                        onPress={this._onTriedChanged}
+                        textStyle={{fontSize: 10}}
+                        size={18}
+                        containerStyle={{padding: 1}}
                     />
-                    <Text style={styles.label}>Tried</Text>
                     {this.props.tried && (
                         <View style={styles.ratings}>
                             <Text onPress={() => this._onRatingChanged(1)} style={[styles.label, this.props.rating >= 1 ? styles.ratingSelected : styles.ratingNotSelected]}>{'\u2B50'}</Text>
@@ -152,17 +162,20 @@ const styles = StyleSheet.create({
         borderColor : 'lightgray'
     },
     info : {
-        flex : 1
+        flex : 1,
+        fontSize: 7
     },
     infoWide : {
-        flex : 2
+        flex : 2,
+        fontSize: 7
     },
     notes : {
         marginLeft : 10
     },
     controls : {
         flexDirection : 'row',
-        marginLeft : 10
+        marginLeft : 10,
+        flexWrap: 'wrap'
     },
     flags : {
         flex : 1,
@@ -181,6 +194,7 @@ const styles = StyleSheet.create({
     },
     label : {
         marginTop: 5
+
     },
     titleRow : {
         flexDirection : 'row',

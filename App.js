@@ -3,6 +3,7 @@ import BeerList from './components/BeerList.js'
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 
 export default function App() {
+  StatusBar.setHidden(true);
   return (
     <View style={styles.container}>
       <BeerList />
