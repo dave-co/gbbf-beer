@@ -93,17 +93,13 @@ class BeerList extends React.PureComponent {
     }
 
     _onAddBeer = (beer) => {
-        console.log(beer)
-        console.log(this.state.extraBeers)
         var maxId = 5000
         for (const [key, value] of this.state.extraBeers.entries()) {
-            console.log(key, value);
             if (value && value.id && parseInt(value.id, 10) > maxId) {
                 maxId = parseInt(value.id, 10)
             }
         }
         maxId += 1
-        console.log(maxId)
         beer.id = maxId.toString()
         this.setState((state) => {
             const extraBeers = new Map(state.extraBeers)
@@ -117,7 +113,6 @@ class BeerList extends React.PureComponent {
 
     _onDeleteManualEntry = (id) => {
         if(this.state.extraBeers.has(id)){
-            console.log('id=' + id + ' found')
             this.setState((state) => {
                 const extraBeers = new Map(state.extraBeers)
                 extraBeers.delete(id)
@@ -127,6 +122,74 @@ class BeerList extends React.PureComponent {
                 saveExtraBeers(new Map(this.state.extraBeers))
             })
         }
+    }
+
+    _onExport = () => {
+        let exportData = {}
+        let exportWants = []
+        let exportTrieds = []
+        for( let triedId of this.state.tried ) {
+            let tried = {}
+            tried.id = triedId[0]
+            if(triedId[1] == true){
+                tried = this._hydrateBeer(tried)
+                tried.favourite = this._isFavourite(tried.id)
+                tried.rating = this._getRating(tried.id)
+                exportTrieds.push(tried) 
+            }
+        }
+        exportData.trieds = exportTrieds
+        for( let wantId of this.state.wants ){
+            let want = {}
+            want.id = wantId[0]
+            if(wantId[1] == true){
+                want = this._hydrateBeer(want)
+                exportWants.push(want)
+            }
+        }
+        exportData.wants = exportWants
+        console.log(exportData)
+        // console.log has max line output length of 4100 chars including timestamp, log level and tags
+        // so we need to split it over multiple lines
+        var str = JSON.stringify(exportData)
+        let i = 0
+        do {
+            let sub = str.substr(i, 4000)
+            console.log(sub)
+            i += 4000
+        } while (i < str.length)
+    }
+
+    _isFavourite = (id) => {
+        for( let entry of this.state.favourites ) {
+            if ( entry[0] == id && entry[1] == true) return true
+        }
+        return false
+    }
+
+    _getRating = (id) => {
+        for( let entry of this.state.ratings ){
+            if( entry[0] == id ) return entry[1]
+        }
+        return undefined
+    }
+
+    _hydrateBeer = (toHydrate) => {
+        let beer = BEER_DATA.filter(b => {return toHydrate.id === b.id})
+        if(beer.length > 0){
+            toHydrate.name = beer[0].name
+            toHydrate.brewery = beer[0].brewery
+            toHydrate.notes = beer[0].notes
+            toHydrate.abv = beer[0].abv
+            toHydrate.colour = beer[0].colour
+            toHydrate.style = beer[0].style
+            toHydrate.category = beer[0].category
+            toHydrate.barCode = beer[0].barCode
+            toHydrate.barName = beer[0].barName
+            toHydrate.dispenseMethod = beer[0].dispenseMethod
+            toHydrate.country = beer[0].country
+        }
+        return toHydrate
     }
     
       _renderItem = ({item}) => (
@@ -166,6 +229,7 @@ class BeerList extends React.PureComponent {
             tried={this.state.tried}
             beerCount={this.state.beerData.length}
             onAddBeer={this._onAddBeer}
+            onExport={this._onExport}
           />
       }
 

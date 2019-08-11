@@ -194,7 +194,7 @@ class Header extends React.Component {
                     />
                     <Text style={styles.label}>Tried</Text>
                     <Text style={styles.luckyDip} onPress={() => this.luckyDip()}>{'\u2728'}Lucky Dip</Text>
-                    <Text style={styles.beerCount}>{this.props.beerCount} beers</Text>
+                    <Text style={styles.beerCount} onPress={() => this.props.onExport()}>{this.props.beerCount} beers</Text>
                 </View>
                 {this.state.showBeerEntry && (
                     <View style={styles.row}>
